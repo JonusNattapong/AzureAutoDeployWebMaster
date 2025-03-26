@@ -1,0 +1,51 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #0078d4;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 0;
+}
+
+.status {
+    background-color: #f3f2f1;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+#deployment-status {
+    padding: 10px;
+    background-color: white;
+    border-radius: 3px;
+    min-height: 50px;
+}
+
+/* Environment-specific colors */
+body.dev {
+    background-color: #f5f5f5;
+    border-left: 5px solid #2b579a;
+}
+
+body.staging {
+    background-color: #fff4ce;
+    border-left: 5px solid #ffaa44;
+}
+
+body.production {
+    background-color: #f5f5f5;
+    border-left: 5px solid #107c10;
+}

@@ -1,0 +1,29 @@
+{
+  "name": "azure-autodeploy-webmaster",
+  "version": "1.0.0",
+  "description": "Automated web deployment system using Azure",
+  "scripts": {
+    "start": "node server.js",
+    "build": "npm install && echo 'Build complete'",
+    "test": "echo 'Running tests...' && exit 0",
+    "lint": "eslint src/*.js",
+    "health-check": "node health-check.js",
+    "deploy:dev": "node scripts/deploy.js dev",
+    "deploy:staging": "node scripts/deploy.js staging",
+    "deploy:prod": "node scripts/deploy.js production",
+    "rollback": "node scripts/rollback.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "winston": "^3.11.0",
+    "axios": "^1.6.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

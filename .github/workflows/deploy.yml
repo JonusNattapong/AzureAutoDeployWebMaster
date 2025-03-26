@@ -1,0 +1,58 @@
+name: Azure AutoDeploy WebMaster CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - 'package.json'
+
+env:
+  AZURE_WEBAPP_NAME: 'azure-autodeploy-webmaster'
+  AZURE_WEBAPP_PACKAGE_PATH: 'src'
+  NODE_VERSION: '18.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - run: npm install
+    - run: npm run build
+    - run: npm test
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: webapp
+        path: src/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: webapp
+    - name: 'Azure Login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: 'Deploy to Azure Web App'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: 'Run health check'
+      run: |
+        npm install
+        npm run health-check
+      env:
+        PORT: 8080
+        APP_URL: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net
